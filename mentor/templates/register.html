@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Join Today</legend>
+                   <div class="form-group">
+                    {{ form.status.label(class="form-control-label") }}
+
+                    {% if form.status.errors %}
+                        {{ form.status(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.status.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.status(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+
+
+                <div class="form-group">
+                    {{ form.username.label(class="form-control-label") }}
+
+                    {% if form.username.errors %}
+                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.username(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class="form-control-label") }}
+                    {% if form.password.errors %}
+                        {{ form.password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.password(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.confirm_password.label(class="form-control-label") }}
+                    {% if form.confirm_password.errors %}
+                        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.confirm_password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.confirm_password(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                   <div class="form-group">
+                    {{ form.experience.label(class="form-control-label") }}
+
+                    {% if form.experience.errors %}
+                        {{ form.experience(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.experience.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.experience(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+             <div class="form-group">
+                    {{ form.jobfield.label(class="form-control-label") }}
+                    {% if form.jobfield.errors %}
+                        {{ form.jobfield(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.jobfield.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.jobfield(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+             <div class="form-group">
+                    {{ form.jobtitle.label(class="form-control-label") }}
+                    {% if form.jobtitle.errors %}
+                        {{ form.jobtitle(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.jobtitle.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.jobtitle(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+              <div class="form-group">
+                    {{ form.bio.label(class="form-control-label") }}
+
+                    {% if form.bio.errors %}
+                        {{ form.bio(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.bio.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.bio(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+        <script>
+            let jobfield_select = document.getElementById('jobfield');
+            let jobtitle_select = document.getElementById('jobtitle');
+
+
+            jobfield_select.onchange = function(){
+                jobfield = jobfield_select.value;
+
+                 fetch('/jobtitle/' + jobfield).then(function(response){
+                     response.json().then(function(data) {
+                        let optionHTML = '';
+
+
+                        for (let jobtitle of data.jobtitles) {
+                            optionHTML += '<option value="' + jobtitle.id +'">' + jobtitle.name + '</option>';
+                  }
+                        jobtitle_select.innerHTML = optionHTML;
+                       });
+                });
+            }
+
+        </script>
+    </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Already Have An Account? <a class="ml-2" href="{{ url_for('users.login') }}">Sign In</a>
+        </small>
+    </div>
+{% endblock content %}

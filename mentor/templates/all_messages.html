@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% if current_user.inbox == False  %}
+        <h1>You do not have any messages. Send a message to someone or wait to recieve one.</h1>
+        {{ current_user.inbox }}
+    {% else %}
+        <h1 id="myHeader">{{ current_user.username.upper() }}'s Messages</h1>
+        {% for key,list in mess_dict.items() %}
+           {% if list[0].author.username != current_user.username %}
+
+                <article class="media content-section">
+                  <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + list[0].author.image_file) }}">
+                  <div class="media-body">
+                    <div class="article-metadata">
+                      <a class="mr-2" href="#">{{ list[0].author.username }}</a>
+                            {% for item in list %}
+                                {% if item.author.username == current_user.username %}
+                                    <p class="article-content">{{ item.body }}</p> - sent from you
+                                {% else %}
+                                    <p class="article-content">{{ item.body }}- sent from {{ item.author.username }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('users.messages',
+                                                user=list[0].author.username) }}">
+                                 Send a message to  {{ list[0].author.username }}
+                            </a>
+                    </div>
+                  </div>
+                </article>
+
+            {% else %}
+                 <article class="media content-section">
+                  <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + list[0].reciever.image_file) }}">
+                  <div class="media-body">
+                    <div class="article-metadata">
+                      <a class="mr-2" href="#">{{ list[0].reciever.username }}</a>
+
+                                 {% for item in list %}
+                                    {% if item.author.username == current_user.username %}
+                                        <p class="article-content">{{ item.body }}</p> - sent from you
+                                    {% else %}
+                                        <p class="article-content">{{ item.body }}</p> - sent from {{ item.author.username }}
+                                    {% endif %}
+                                {% endfor %}
+                            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('users.messages',
+                                                user=list[0].reciever.username) }}">
+                                 Send a message to  {{ list[0].reciever.username }}
+                            </a>
+                    </div>
+                  </div>
+                </article>
+
+
+           {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endblock content %}

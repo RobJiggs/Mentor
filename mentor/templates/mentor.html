@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% if mentor != None %}
+        <h1>Your Mentor is</h1>
+
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + mentor.image_file) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ mentor.username }}</a>
+                <a class="mr-2" href="#">{{ mentor.field }}</a>
+                    <a class="mr-2" href="#">{{ mentor.job }}</a>
+                    <a class="mr-2" href="#">{{ mentor.experience }} years of experience</a>
+                    <p class="article-content">{{ mentor.bio.paragraph  }}</p>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('users.send_message',
+                                        recipient=mentor.username) }}">
+                        {{ _('Send a message to you Mentor') }}
+                    </a>
+            </div>
+          </div>
+        </article>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('users.mentorsearch') }}">Click here to choose a new mentor</a>
+    {% else %}
+        <article class="media content-section">
+           It appears you dont have a mentor <a class="ml-2" href="{{ url_for('users.mentorsearch') }}">Search for one now</a>
+
+        </article>
+    {% endif %}
+{% endblock content %}}
